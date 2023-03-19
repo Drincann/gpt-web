@@ -8,6 +8,10 @@ import { logger } from './utils/logger'
 import KoaStatic from 'koa-static'
 import path from 'node:path'
 import { adminToStatic } from './middlewares/adminToStatic'
+import { threeFreeTalkEveryday } from './services/crontask'
+
+// cron task
+threeFreeTalkEveryday({ stop: false })
 
 // cmj patch
 import { fileURLToPath } from "node:url";

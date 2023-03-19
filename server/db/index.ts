@@ -2,7 +2,7 @@ import mysql from 'mysql2/promise'
 import config from '../config.js'
 import { logger } from '../utils/logger.js'
 
-const conn = await mysql.createConnection({
+export const conn = await mysql.createConnection({
   host: config.mysql.host,
   port: config.mysql.port,
   user: config.mysql.user,
