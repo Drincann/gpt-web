@@ -17,7 +17,7 @@ export const codeHandler = errorHandler(parseBody(async (ctx, next, phone: strin
     logger.error(`[USER] ${ctx.ip} send code to ${phone} failed`)
     return ctx.body = { code: 500, message: "发送失败，请稍后重试", }
   }
-  logger.info(`[USER] ${ctx.ip} send code to ${phone} success`)
+  logger.info(`[USER] ${ctx.ip} send code [${code}] to ${phone} success`)
   ctx.codeStorage.set(phone, { code, })
   ctx.ipSendCodeExpireStorage.set(ctx.ip, true)
   ctx.ipSendCodeButNotVerifyPerDayStorage.set(ctx.ip, { cnt: (ctx.ipSendCodeButNotVerifyPerDayStorage.get(ctx.ip)?.cnt ?? 0) + 1 })
