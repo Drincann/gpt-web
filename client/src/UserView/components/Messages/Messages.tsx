@@ -1,7 +1,7 @@
 import { Avatar, List } from "antd"
 import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useRef } from "react"
-import { ChatContext } from "../../api"
+import { ChatContext } from "../../../api"
 import { GPTSvg } from "./GPTSvg"
 import './Messages.less'
 
