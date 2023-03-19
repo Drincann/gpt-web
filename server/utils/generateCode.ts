@@ -1,4 +1,4 @@
 export const generateCode = (length: number) => {
-  const code = Math.random().toString(36).slice(2, length)
+  const code = Math.random().toString().slice(2, 2 + length)
   return code
 }
