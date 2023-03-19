@@ -7,6 +7,7 @@ import type { AppState, AppContext } from './types'
 import { logger } from './utils/logger'
 import KoaStatic from 'koa-static'
 import path from 'node:path'
+import { adminToStatic } from './middlewares/adminToStatic'
 
 // cmj patch
 import { fileURLToPath } from "node:url";
@@ -28,6 +29,7 @@ app.use(KoaBody())
   .use(setIPSendCodeButNotVerifyPerDayStorage(1000 * 60 * 60 * 24))
   .use(rootRouter.routes())
   .use(rootRouter.allowedMethods())
+  .use(adminToStatic)
   .use(KoaStatic(staticPath))
   .listen(config.port, () => {
     logger.info(`[SERVER] Server is running on port ${config.port}`)
