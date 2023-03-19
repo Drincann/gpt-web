@@ -33,7 +33,7 @@ export const Messages: React.FC<MessagesProps> = props => {
               }}
               avatar={item.role === 'assistant' ? <Avatar size={64} icon={<GPTSvg size={64} />} /> : <Avatar size={64} icon={<UserOutlined />} />}
               title={<a href="https://ant.design">{item.role}</a>}
-              description={item.content}
+              description={<>{item.content.split('\n').map((item, index) => <p key={index}>{item}</p>)}</>}
             />
           </List.Item>
         )}
