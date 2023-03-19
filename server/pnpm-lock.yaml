@@ -21,6 +21,7 @@ specifiers:
   node-fetch: ^3.3.1
   nodemon: ^2.0.21
   openai: ^3.2.1
+  typescript: ^5.0.2
   urlencode: ^1.1.0
 
 dependencies:
@@ -47,6 +48,7 @@ devDependencies:
   '@types/lodash': 4.14.191
   '@types/urlencode': 1.1.2
   nodemon: 2.0.21
+  typescript: 5.0.2
 
 packages:
 
@@ -1122,6 +1124,12 @@ packages:
       media-typer: 0.3.0
       mime-types: 2.1.35
     dev: false
+
+  /typescript/5.0.2:
+    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
+    engines: {node: '>=12.20'}
+    hasBin: true
+    dev: true
 
   /undefsafe/2.0.5:
     resolution: {integrity: sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==}

@@ -12,7 +12,8 @@
 		"@types/koa-static": "^4.0.2",
 		"@types/lodash": "^4.14.191",
 		"@types/urlencode": "^1.1.2",
-		"nodemon": "^2.0.21"
+		"nodemon": "^2.0.21",
+		"typescript": "^5.0.2"
 	},
 	"dependencies": {
 		"@dqbd/tiktoken": "^1.0.2",
