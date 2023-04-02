@@ -104,12 +104,24 @@ export const AdminView: React.FC<{}> = () => {
             title: '剩余额度',
             key: 'chat_balance',
             dataIndex: 'chat_balance',
-            render: text => <span>{text} 条</span>
+            render: text => <span
+              style={{
+                backgroundColor: Number(text) > 3 ? 'skyblue' : 'none',
+                color: Number(text) > 3 ? 'black' : 'none',
+                fontWeight: Number(text) > 3 ? 'bold' : 'none',
+              }}
+            >{text} 条</span>
           }, {
             title: '过期时间',
             key: 'expire',
             dataIndex: 'expire',
-            render: stmp => <span>{new Date(stmp).toLocaleString()}</span>
+            render: stmp => <span
+              style={{
+                backgroundColor: new Date(stmp).getTime() > Date.now() ? 'skyblue' : 'none',
+                color: new Date(stmp).getTime() > Date.now() ? 'black' : 'none',
+                fontWeight: new Date(stmp).getTime() > Date.now() ? 'bold' : 'none',
+              }}
+            >{new Date(stmp).toLocaleString()}</span>
           }, {
             title: '操作',
             key: 'action',
