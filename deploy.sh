@@ -1,1 +1,1 @@
-npx tsc && vercel build && vercel
+npx tsc && vercel build && vercel --prod
