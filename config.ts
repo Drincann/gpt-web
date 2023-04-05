@@ -28,7 +28,7 @@ export default {
       template_id: 'ST_2020101100000007',
     },
     tencentCloud: {
-      secretId: 'secretId'
+      secretId: 'secretId',
       secretKey: 'secretKey',
       SignName: 'sign',
       TemplateId: '123456',
