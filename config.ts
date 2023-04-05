@@ -21,10 +21,19 @@ export default {
     codeExpire: 1000 * 60 * 10, // 10 minutes
     ipSendCodeExpire: 1000 * 60, // 1 minute
     ipSendButNotVerifyLimitPerday: 50,
-    app_id: 'app_id',
-    secret: 's',
-    sign: 'sign',
-    template_id: 'ST_2020101100000007',
+    ssm: {
+      app_id: 'app_id',
+      secret: 's',
+      sign: 'sign',
+      template_id: 'ST_2020101100000007',
+    },
+    tencentCloud: {
+      secretId: 'secretId'
+      secretKey: 'secretKey',
+      SignName: 'sign',
+      TemplateId: '123456',
+      SmsSdkAppId: '123456',
+    }
   },
 
   vip: {
