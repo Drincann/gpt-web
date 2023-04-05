@@ -4,6 +4,10 @@ import { Messages } from "./components/Messages/Messages";
 import { Sender } from "./components/Sender/Sender";
 import './Chat.less'
 
+const isAsyncIterable = (obj: any): obj is AsyncIterable<any> => {
+  return obj[Symbol.asyncIterator] !== undefined
+}
+
 export const Chat: React.FC<{ isLogin: boolean }> = props => {
   const [loading, setLoading] = useState<boolean>(false)
   const [messages, setMessages] = useState<ChatContext>([])
@@ -21,6 +25,20 @@ export const Chat: React.FC<{ isLogin: boolean }> = props => {
           setLoading(true)
           setMessages(messages => [...messages, { role: 'user', content: msg }])
           const result = await sendMessage(msg)
+
+          if (isAsyncIterable(result)) {
+            const currentMessages = { role: 'assistant' as const, content: '' }
+            setMessages(messages => [...messages, currentMessages])
+            for await (const content of result) {
+              currentMessages.content += content
+              setMessages(messages => {
+                const newMessages = [...messages]
+                newMessages[newMessages.length - 1] = currentMessages
+                return newMessages
+              })
+            }
+            return
+          }
           setMessages(messages => [...messages, { role: 'assistant', content: result.data.reply }])
         } finally {
           setLoading(false)

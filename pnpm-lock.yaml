@@ -13,6 +13,7 @@ specifiers:
   '@types/urlencode': ^1.1.2
   chalk: ^5.2.0
   cron: ^2.3.0
+  eventsource-parser: ^1.0.0
   jsonwebtoken: ^9.0.0
   koa: ^2.14.1
   koa-bodyparser: ^4.4.0
@@ -32,6 +33,7 @@ dependencies:
   '@dqbd/tiktoken': 1.0.2
   chalk: 5.2.0
   cron: 2.3.0
+  eventsource-parser: 1.0.0
   jsonwebtoken: 9.0.0
   koa: 2.14.1
   koa-bodyparser: 4.4.0
@@ -483,6 +485,11 @@ packages:
 
   /escape-html/1.0.3:
     resolution: {integrity: sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==}
+    dev: false
+
+  /eventsource-parser/1.0.0:
+    resolution: {integrity: sha512-9jgfSCa3dmEme2ES3mPByGXfgZ87VbP97tng1G2nWwWx6bV2nYxm2AWCrbQjXToSe+yYlqaZNtxffR9IeQr95g==}
+    engines: {node: '>=14.18'}
     dev: false
 
   /fetch-blob/3.2.0:

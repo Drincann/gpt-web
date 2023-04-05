@@ -1,12 +1,12 @@
 import axios from 'axios'
 import { message as MessageUI } from 'antd'
-type Response<T> = {
+type GPTResponse<T> = {
   data: T, message: string, code: 200 | 400 | 401 | 403 | 404 | 500
 }
 
 export type ChatContext = { role: 'user' | 'assistant', content: string }[]
 
-export const login = async (phone: string, code: string): Promise<Response<{ token: string }>> => {
+export const login = async (phone: string, code: string): Promise<GPTResponse<{ token: string }>> => {
   try {
     const result = (await axios.post('/api/login', { phone, code, })).data
     if (result.code !== 200) {
@@ -21,7 +21,7 @@ export const login = async (phone: string, code: string): Promise<Response<{ tok
 
 }
 
-export const getCode = async (phone: string): Promise<Response<null>> => {
+export const getCode = async (phone: string): Promise<GPTResponse<null>> => {
   try {
     const result = (await axios.get('/api/code', { params: { phone } })).data
     if (result.code !== 200) {
@@ -34,25 +34,52 @@ export const getCode = async (phone: string): Promise<Response<null>> => {
   }
 }
 
-export const sendMessage = async (message: string): Promise<Response<{ reply: string }>> => {
+const createStreamIterator = (stream: ReadableStreamDefaultReader): AsyncIterable<string> => {
+  return {
+    [Symbol.asyncIterator]() {
+      return {
+        next: async () => {
+          const { value, done } = await stream.read();
+          if (done) return { done: true, value: undefined }
+          return { done: false, value: new TextDecoder().decode(value) }
+        }
+      }
+    },
+  }
+}
+
+
+
+export const sendMessage = async (message: string): Promise<GPTResponse<{ reply: string }> | AsyncIterable<string>> => {
   try {
     const token = localStorage.getItem('token')
     if (!token) throw new Error('登录已过期，请重新登录')
-    const result = (await axios.post('/api/chat', { message, }, {
+    const result = (await fetch('/api/chat-stream', {
+      method: 'POST',
+      body: JSON.stringify({ message }),
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       }
-    })).data
-    if (result.code === 401) {
+    }))
+    if (result.body == null) throw new Error('发送失败')
+    const reader = result.body.getReader()
+    if (reader != null) {
+      return createStreamIterator(reader)
+    }
+
+    const response = await result.json()
+
+    if (response.code === 401) {
       throw new Error('登录已过期，请重新登录')
     }
-    if (result.code === 402) {
+    if (response.code === 402) {
       throw new Error('余额不足，请充值')
     }
-    if (result.code !== 200 || typeof result.data.reply !== 'string') {
-      throw new Error(result.message ?? '发送失败')
+    if (response.code !== 200 || typeof response.data.reply !== 'string') {
+      throw new Error(response.message ?? '发送失败')
     }
-    return result
+    return response
   } catch (err) {
     if ((err as any)?.response?.status === 401) {
       MessageUI.error('登录已过期，请重新登录')
@@ -63,7 +90,7 @@ export const sendMessage = async (message: string): Promise<Response<{ reply: st
   }
 }
 
-export const getMessageContext = async (): Promise<Response<{ messages: ChatContext }>> => {
+export const getMessageContext = async (): Promise<GPTResponse<{ messages: ChatContext }>> => {
   try {
     const token = localStorage.getItem('token')
     if (!token) throw new Error('登录已过期，请重新登录')
@@ -108,7 +135,7 @@ export const checkLogin = async (): Promise<boolean> => {
 }
 
 // admin
-export const recharge = async (phone: string, amount: number): Promise<Response<null>> => {
+export const recharge = async (phone: string, amount: number): Promise<GPTResponse<null>> => {
   const token = localStorage.getItem('token')
   if (!token) throw new Error('登录已过期，请重新登录')
   try {
@@ -124,7 +151,7 @@ export const recharge = async (phone: string, amount: number): Promise<Response<
 }
 export type UserDuck = { phone: string, chat_balance: number, expire: Date, id: number }
 
-export const listUsers = async (phone: string): Promise<Response<{ list: UserDuck[] }>> => {
+export const listUsers = async (phone: string): Promise<GPTResponse<{ list: UserDuck[] }>> => {
   const token = localStorage.getItem('token')
   if (!token) throw new Error('登录已过期，请重新登录')
   try {
@@ -140,7 +167,7 @@ export const listUsers = async (phone: string): Promise<Response<{ list: UserDuc
   }
 }
 
-export const expire = async (phone: string, days: number): Promise<Response<null>> => {
+export const expire = async (phone: string, days: number): Promise<GPTResponse<null>> => {
   const token = localStorage.getItem('token')
   if (!token) throw new Error('登录已过期，请重新登录')
   try {
