@@ -12,7 +12,7 @@ npm run build
 
 build server
 
-`.`
+`./`
 
 ```sh
 npx tsc
